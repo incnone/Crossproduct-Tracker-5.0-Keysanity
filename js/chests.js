@@ -283,18 +283,18 @@
 			}
         }
     }, { // [7]
-        caption: 'Ice Palace (yellow=must bomb jump)',
+        caption: 'Ice Palace',
         is_beaten: false,
         is_beatable: function() {
 			if (is_keysanity) {
 				if (!items.moonpearl || !items.flippers || items.glove !== 2 || !items.hammer) return 'unavailable';
 				if (!items.firerod && !(items.bombos && items.sword)) return 'unavailable';
 				if (items.bigkey7 && ((items.smallkey7 > 0 && items.somaria) || items.smallkey7 > 1)) return 'available';
-				return 'possible'; /* via bomb jump */
+				return 'glitchable'; /* via bomb jump */
 			} else {
 				if (!items.moonpearl || !items.flippers || items.glove !== 2 || !items.hammer) return 'unavailable';
 				if (!items.firerod && !(items.bombos && items.sword)) return 'unavailable';
-				return items.hookshot || items.somaria ? 'available' : 'possible';				
+				return items.hookshot || items.somaria ? 'available' : 'glitchable';				
 			}
         },
         can_get_chest: function() {
@@ -421,9 +421,9 @@
 
 				var laser_safety = items.byrna || items.cape || items.shield === 3,
 					dark_room = items.lantern ? 'available' : 'dark';
-				if (items.chest9 <= 1) return !laser_safety ? 'unavailable' : items.firerod && items.icerod ? dark_room : 'possible';
-				if (items.chest9 <= 2) return !laser_safety ? 'unavailable' : items.firerod ? dark_room : 'possible';
-				if (items.chest9 <= 4) return laser_safety && items.firerod && items.lantern ? 'available' : 'possible';
+				if (items.chest9 <= 1) return !laser_safety ? 'glitchable' : items.firerod && items.icerod ? dark_room : 'possible';
+				if (items.chest9 <= 2) return !laser_safety ? 'glitchable' : items.firerod ? dark_room : 'possible';
+				if (items.chest9 <= 4) return laser_safety && items.firerod && items.lantern ? 'available' : 'glitchable';
 				return items.firerod && items.lantern ? 'available' : 'possible';
 			}
 			
@@ -542,7 +542,7 @@
         is_opened: false,
         is_available: always
     }, { // [2]
-        caption: 'Stoops Lonk\'s Hoose',
+        caption: 'Link\'s Hoose',
         is_opened: is_standard,
         is_available: always
     }, { // [3]
@@ -554,7 +554,7 @@
                 'unavailable';
         }
     }, { // [4]
-        caption: 'Mimic Cave ({mirror} outside of Turtle Rock)(Yellow = {medallion0} unkown OR possible w/out {firerod})',
+        caption: 'Mimic Cave {mirror}',
         is_opened: false,
         is_available: function() {
             if (!items.moonpearl || !items.hammer || items.glove !== 2 || !items.somaria || !items.mirror) return 'unavailable';
@@ -600,7 +600,7 @@
             return items.moonpearl && items.flute && items.glove === 2 ? 'available' : 'unavailable';
         }
     }, { // [11]
-        caption: 'Super Bunny Chests (2)',
+        caption: 'Super Bunny Cave (2)',
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 && (items.hookshot || items.mirror && items.hammer) ?
@@ -624,11 +624,11 @@
         is_opened: false,
         is_available: always
     }, { // [15]
-        caption: 'Thieve\'s Hut (4 + {bomb})',
+        caption: 'Thieves\' Hut (4 + {bomb})',
         is_opened: false,
         is_available: always
     }, { // [16]
-        caption: 'Hype Cave! {bomb} (NPC + 4 {bomb})',
+        caption: 'Hype Cave {bomb} (NPC + 4 {bomb})',
         is_opened: false,
         is_available: function() {
             return can_reach_outcast() || (items.agahnim && items.moonpearl && items.hammer) ? 'available' : 'unavailable';
@@ -656,7 +656,7 @@
         is_opened: false,
         is_available: always
     }, { // [21]
-        caption: 'Cave Under Rock (bottom chest) {hookshot}/{boots}',
+        caption: 'Hookshot Cave (bottom chest) {hookshot}/{boots}',
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 && (items.hookshot || (items.mirror && items.hammer && items.boots)) ?
@@ -664,7 +664,7 @@
                 'unavailable';
         }
     }, { // [22]
-        caption: 'Cave Under Rock (3 top chests) {hookshot}',
+        caption: 'Hookshot Cave (3 top chests) {hookshot}',
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 && items.hookshot ?
@@ -672,13 +672,13 @@
                 'unavailable';
         }
     }, { // [23]
-        caption: 'Treasure Chest Minigame: Pay 30 rupees',
+        caption: 'Treasure Chest Minigame: {rupee} 30',
         is_opened: false,
         is_available: function() {
             return can_reach_outcast() ? 'available' : 'unavailable';
         }
     }, { // [24]
-        caption: 'Bottle Vendor: Pay 100 rupees',
+        caption: 'Bottle Vendor: {rupee} 100',
         is_opened: false,
         is_available: always
     }, { // [25]
@@ -692,25 +692,25 @@
             return 'unavailable';
         }
     }, { // [26]
-        caption: 'Ol\' Stumpy',
+        caption: 'Haunted Grove',
         is_opened: false,
         is_available: function() {
             return can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer ? 'available' : 'unavailable';
         }
     }, { // [27]
-        caption: 'Dying Boy: Distract him with {bottle} so that you can rob his family!',
+        caption: 'Sick Kid {bottle}',
         is_opened: false,
         is_available: function() {
             return items.bottle ? 'available' : 'unavailable';
         }
     }, { // [28]
-        caption: 'Gary\'s Lunchbox (save the frog first)',
+        caption: 'Purple Chest',
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 ? 'available' : 'unavailable';
         }
     }, { // [29]
-        caption: 'Fugitive under the bridge {flippers}',
+        caption: 'Fugitive {flippers}',
         is_opened: false,
         is_available: function() {
             return items.flippers ? 'available' : 'unavailable';
@@ -741,13 +741,13 @@
                 'available' : 'unavailable';
         }
     }, { // [33]
-        caption: 'King Zora: Pay 500 rupees',
+        caption: 'King Zora: {rupee} 500',
         is_opened: false,
         is_available: function() {
             return items.flippers || items.glove ? 'available' : 'unavailable';
         }
     }, { // [34]
-        caption: 'Lost Old Man {lantern}',
+        caption: 'Old Man {lantern}',
         is_opened: false,
         is_available: function() {
             return items.glove || items.flute ?
@@ -755,7 +755,7 @@
                 'unavailable';
         }
     }, { // [35]
-        caption: 'Witch: Give her {mushroom}',
+        caption: 'Witch {mushroom}',
         is_opened: false,
         is_available: function() {
             return items.mushroom ? 'available' : 'unavailable';
@@ -785,7 +785,7 @@
             return items.mirror && (can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer) ? 'available' : 'unavailable';
         }
     }, { // [40]
-        caption: 'Graveyard Cliff Cave {mirror}',
+        caption: 'Graveyard Cliff {mirror}',
         is_opened: false,
         is_available: function() {
             return can_reach_outcast() && items.mirror ? 'available' : 'unavailable';
@@ -797,7 +797,7 @@
             return items.flute && items.glove === 2 && items.mirror ? 'available' : 'unavailable';
         }
     }, { // [42]
-        caption: '{hammer}{hammer}{hammer}{hammer}{hammer}{hammer}{hammer}{hammer}!!!!!!!!',
+        caption: 'Peg Cave {hammer}',
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 && items.hammer ? 'available' : 'unavailable';
@@ -867,7 +867,7 @@
                 items.glove === 2 && items.moonpearl && items.flippers ? 'available' : 'unavailable';
         }
     }, { // [52]
-        caption: 'Alec Baldwin\'s Dig-a-Thon: Pay 80 rupees',
+        caption: 'Digging Game {rupee} 80',
         is_opened: false,
         is_available: function() {
             return can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer ? 'available' : 'unavailable';
@@ -881,13 +881,13 @@
             return 'unavailable';
         }
     }, { // [54]
-        caption: 'Buried Itam {shovel}',
+        caption: 'Dig Spot {shovel}',
         is_opened: false,
         is_available: function() {
             return items.shovel ? 'available' : 'unavailable';
         }
     }, { // [55]
-        caption: 'Escape Sewer Side Room (3) {bomb}/{boots}' + (is_standard ? '' : ' (yellow = need small key)'),
+        caption: 'Back of Escape (3) {bomb}/{boots}' + (is_standard ? '' : ' (yellow = need small key)'),
         is_opened: false,
         is_available: function() {
 			if (is_keysanity) {
@@ -900,7 +900,7 @@
                 items.lantern ? 'possible' : 'dark';
         }
     }, { // [56]
-        caption: "Castle Secret Entrance (Uncle + 1)",
+        caption: "Castle Secret Entrance (2)",
         is_opened: is_standard,
         is_available: always
     }, { // [57]
@@ -918,13 +918,13 @@
             return items.powder && (items.hammer || items.glove === 2 && items.mirror && items.moonpearl) ? 'available' : 'unavailable';
         }
     }, { // [60]
-        caption: 'Take the frog home {mirror} / Save+Quit',
+        caption: 'Blacksmith',
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 ? 'available' : 'unavailable';
         }
     }, { // [61]
-        caption: 'Fat Fairy: Buy OJ bomb from Dark Link\'s House after {crystal}5 {crystal}6 (2 items)',
+        caption: 'Pyramid Fairy {crystal}5 {crystal}6 (2)',
         is_opened: false,
         is_available: function() {
             //crystal check
@@ -951,7 +951,7 @@
             return items.book ? 'possible' : 'unavailable';
         }
     }, { // [63]
-        caption: 'Escape Sewer Dark Room {lantern}',
+        caption: 'Sewer Chest {lantern}',
         is_opened: is_standard,
         is_available: function() {
             return is_standard || items.lantern ? 'available' : 'dark';

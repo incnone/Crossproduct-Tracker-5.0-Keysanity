@@ -125,7 +125,8 @@ body {
 .unavailable { background-color: red; }
 .available { background-color: lime; }
 .possible { background-color: yellow; }
-.dark { background-color: blue; }
+.dark { background-color: darkgreen; }
+.glitchable { background-color: darkgreen; }
 .opened { background-color: #7f7f7f; }
 
 #caption {
@@ -252,6 +253,7 @@ body {
 .pendant-0 { background-image: url(images/overlay/pendant0.png); }
 .pendant-1 { background-image: url(images/overlay/pendant1.png); }
 .pendant-2 { background-image: url(images/overlay/pendant2.png); }
+.rupee { background-image: url(images/overlay/rupee.png); }
 
 #bossMap0, #dungeon0 { left: 46.8%; top: 38.8%; }
 #bossMap1, #dungeon1 { left: 3.8%;  top: 78.4%; }
