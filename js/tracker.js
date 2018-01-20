@@ -65,7 +65,7 @@
 		
 		if (!skipkey) {
 		
-			if (query.mode === 'keysanity' && (label === 'moonpearl' || label === 'tunic' || label === 'sword' || label === 'shield')) {
+			if (query.mode === 'keysanity' && (label === 'tunic' || label === 'sword' || label === 'shield')) {
 				var node = document.getElementsByClassName(label)[1],
 					is_boss = node.classList.contains('boss');
 			} else {
@@ -98,7 +98,7 @@
 					if (items['keychest'+k])
 						document.getElementById('dungeon'+k).className = 'dungeon ' + dungeons[k].can_get_chest();
 				} else {
-					if (items['chest'+k])
+					if (items['chest'+k] || k == 10)
 						document.getElementById('dungeon'+k).className = 'dungeon ' + dungeons[k].can_get_chest();
 				}
 
@@ -238,9 +238,9 @@
     }
 
     window.start = function() {
-        for (var k = 0; k < dungeons.length; k++) {
-            prizes[k] = 0;
-        }
+		for (var k = 0; k < dungeons.length; k++) {
+			prizes[k] = 0;
+		}
 
         if (mode === 'standard') {
             document.getElementsByClassName('sword')[0].classList.add('active-1');
@@ -275,8 +275,9 @@
 		} else {
 			document.getElementById('chestMap65').style.visibility = 'hidden';
 			document.getElementById('chestMap66').style.visibility = 'hidden';
-			document.getElementById('bossMap10').style.visibility = 'hidden';
-			document.getElementById('dungeon10').style.visibility = 'hidden';
+			for (var k = 0; k < dungeons.length; k++) {
+				toggle_dungeon(k);
+			}
 		}
 				
     };

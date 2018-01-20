@@ -487,7 +487,17 @@
                 }
 				return 'unavailable';
 			} else {
-				return 'unavailable';
+				if (!items.moonpearl || !items.glove === 2 || (!items.hookshot && !(items.mirror && items.hammer))) return 'unavailable';
+				
+				var crystal_count = 0;
+				for (var k = 0; k < 10; k++) {
+					if ((prizes[k] === 1 || prizes[k] === 2) && items['boss'+k]) {
+						crystal_count++;
+					}
+				}
+				if (crystal_count < 7 || !items.hookshot || items.bow <= 1 || (!items.firerod && !items.lantern)) return 'unavailable';
+				if (!items.somaria) return 'possible';
+				return 'available';
 			}
         },
         can_get_chest: function() {
@@ -549,7 +559,17 @@
 				}
 				return 'unavailable';
 			} else {
-				return 'unavailable';
+				if (!items.moonpearl || !items.glove === 2 || (!items.hookshot && !(items.mirror && items.hammer))) return 'unavailable';
+				
+				var crystal_count = 0;
+				for (var k = 0; k < 10; k++) {
+					if ((prizes[k] === 1 || prizes[k] === 2) && items['boss'+k]) {
+						crystal_count++;
+					}
+				}
+				if (crystal_count < 7) return 'unavailable';
+				if (!items.hookshot || items.bow <= 1 || (!items.firerod && !items.lantern) || !items.somaria) return 'possible';
+				return 'available';
 			}
         }
     }];
