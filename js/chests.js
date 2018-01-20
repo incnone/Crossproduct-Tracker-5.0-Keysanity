@@ -10,6 +10,10 @@
             items.glove === 2 || items.glove && items.hammer ||
             items.agahnim && items.hookshot && (items.hammer || items.glove || items.flippers));
     }
+	
+	function can_reach_outcast_with_aga() {
+		return items.moonpearl && items.hookshot && (items.hammer || items.glove || items.flippers);
+	}
 
     function medallion_check(i) {
         if (!items.sword || !items.bombos && !items.ether && !items.quake) return 'unavailable';
@@ -24,6 +28,10 @@
     function cane() { return items.somaria || items.byrna; }
     function rod() { return items.firerod || items.icerod; }
 
+	function agahnim() { return items.agahnim ? 'available' :
+		items.sword >= 2 || (items.cape && items.sword) ? 'agapossible' : 'unavailable';
+	}
+	
     function always() { return 'available'; }
 
     // define dungeon chests
@@ -130,7 +138,8 @@
 				return items.lantern ? 'available' : 'dark';
 			} else {
 				if (!items.moonpearl || !(items.bow > 1) || !items.hammer) return 'unavailable';
-				if (!items.agahnim && !items.glove) return 'unavailable';
+				if (items.glove) return items.lantern ? 'available' : 'dark';
+				if (!items.agahnim) return agahnim();
 				return items.lantern ? 'available' : 'dark';
 			}
         },
@@ -193,7 +202,7 @@
                 return 'unavailable'; // We got all reachable chests or even more if helmasaur was not prioritized
 			} else {
 				if (!items.moonpearl) return 'unavailable';
-				if (!items.agahnim && !(items.hammer && items.glove) && !(items.glove === 2 && items.flippers)) return 'unavailable';
+				if (!(items.hammer && items.glove) && !(items.glove === 2 && items.flippers)) return agahnim();
 				return !(items.bow > 1 && items.lantern) ||
 					items.chest3 === 1 && !items.hammer ?
 					'possible' : 'available';
@@ -211,7 +220,7 @@
 			} else {
 				if (!items.moonpearl || !items.mirror || !items.flippers) return 'unavailable';
 				if (!items.hammer || !items.hookshot) return 'unavailable';
-				if (!items.glove && !items.agahnim) return 'unavailable';
+				if (!items.glove) return agahnim();
 				return 'available';				
 			}
         },
@@ -228,7 +237,7 @@
 				return 'unavailable';
 			} else {
 				if (!items.moonpearl || !items.mirror || !items.flippers) return 'unavailable';
-				if (!can_reach_outcast() && !(items.agahnim && items.hammer)) return 'unavailable';
+				if (!can_reach_outcast()) return items.hammer ? agahnim() : can_reach_outcast_with_aga() ? 'agahnim' : 'unavailable';
 				if (items.chest4 <= 2) return !items.hammer || !items.hookshot ? 'unavailable' : 'available';
 				if (items.chest4 <= 4) return !items.hammer ? 'unavailable' : !items.hookshot ? 'possible' : 'available';
 				if (items.chest4 <= 5) return !items.hammer ? 'unavailable' : 'available';
@@ -239,7 +248,14 @@
         caption: 'Skull Woods',
         is_beaten: false,
         is_beatable: function() {
-            return !can_reach_outcast() || !items.firerod || !items.sword ? 'unavailable' : 'available';
+			if (!items.firerod || !items.sword) 
+				return 'unavailable';
+			else if (can_reach_outcast()) 
+				return 'available';
+			else if (can_reach_outcast_with_aga()) 
+				return agahnim();
+			else
+				return 'unavailable';
         },
         can_get_chest: function() {
 			if (is_keysanity) {
@@ -250,8 +266,12 @@
 				if (items.keychest5 >= 2 && items.firerod && (items.sword > 0 || items.bigkey5)) return 'possible';
 				return 'unavailable';
 			} else {
-				if (!can_reach_outcast()) return 'unavailable';
-				return items.firerod ? 'available' : 'possible';				
+				if (can_reach_outcast())
+					return items.firerod ? 'available' : 'possible';
+				else if (can_reach_outcast_with_aga())
+					return agahnim();
+				else
+					return 'unavailable';			
 			}
         }
     }, { // [6]
@@ -264,9 +284,14 @@
 				if (!items.bigkey6) return 'unavailable';
 				return 'available';
 			} else {
-				if (!(melee() || cane())) return 'unavailable';
-				if (!can_reach_outcast()) return 'unavailable';
-				return 'available';
+				if (melee() || cane()) {
+					if (can_reach_outcast()) 
+						return 'available';
+					else if (can_reach_outcast_with_aga()) 
+						return agahnim();
+				} else {
+					return 'unavailable';
+				}
 			}
         },
         can_get_chest: function() {
@@ -278,8 +303,12 @@
 				if (items.keychest6 >= 2 && items.bigkey6 && (melee() || cane())) return 'possible';
 				return 'unavailable';
 			} else {
-				if (!can_reach_outcast()) return 'unavailable';
-				return items.chest6 === 1 && !items.hammer ? 'possible' : 'available';
+				if (can_reach_outcast())
+					return items.chest6 === 1 && !items.hammer ? 'possible' : 'available';
+				else if (can_reach_outcast_with_aga())
+					return agahnim();
+				else 
+					return 'unavailable';
 			}
         }
     }, { // [7]
@@ -292,9 +321,12 @@
 				if (items.bigkey7 && ((items.smallkey7 > 0 && items.somaria) || items.smallkey7 > 1)) return 'available';
 				return 'glitchable'; /* via bomb jump */
 			} else {
-				if (!items.moonpearl || !items.flippers || items.glove !== 2 || !items.hammer) return 'unavailable';
-				if (!items.firerod && !(items.bombos && items.sword)) return 'unavailable';
-				return items.hookshot || items.somaria ? 'available' : 'glitchable';				
+				if (!items.moonpearl || !items.flippers || items.glove !== 2 || !items.hammer) 
+					return 'unavailable';
+				else if (!items.firerod && !(items.bombos && items.sword)) 
+					return 'unavailable';
+				else 
+					return items.hookshot || items.somaria ? 'available' : 'glitchable';		
 			}
         },
         can_get_chest: function() {
@@ -311,9 +343,12 @@
 				if (items.keychest7 >= 2 && items.hammer) return 'possible';
 				return 'unavailable';
 			} else {
-				if (!items.moonpearl || !items.flippers || items.glove !== 2) return 'unavailable';
-				if (!items.firerod && !(items.bombos && items.sword)) return 'unavailable';
-				return items.hammer ? 'available' : 'possible';
+				if (!items.moonpearl || !items.flippers || items.glove !== 2) 
+					return 'unavailable';
+				else if (!items.firerod && !(items.bombos && items.sword)) 
+					return 'unavailable';
+				else 
+					return items.hammer ? 'available' : 'glitchable';
 			}
         }
     }, { // [8]
@@ -330,15 +365,21 @@
 
 				return items.lantern ? 'available' : 'dark'
 			} else {
-				if (!melee_bow()) return 'unavailable';
-				if (!items.moonpearl || !items.flute || items.glove !== 2 || !items.somaria) return 'unavailable';
-				if (!items.boots && !items.hookshot) return 'unavailable';
-				var state = medallion_check(0);
-				if (state) return state;
-
-				return items.lantern || items.firerod ?
-					items.lantern ? 'available' : 'dark' :
-					'possible';				
+				if (!melee_bow()) 
+					return 'unavailable';
+				else if (!items.moonpearl || !items.flute || items.glove !== 2 || !items.somaria) 
+					return 'unavailable';
+				else if (!items.boots && !items.hookshot) 
+					return 'unavailable';
+				else
+				{
+					var state = medallion_check(0);
+					if (state) 
+						return state;				
+					return items.lantern || items.firerod ?
+						items.lantern ? 'available' : 'dark' :
+						'possible';
+				}
 			}
         },
         can_get_chest: function() {
@@ -359,9 +400,9 @@
 			} else {
 				if (!items.moonpearl || !items.flute || items.glove !== 2) return 'unavailable';
 				if (!items.boots && !items.hookshot) return 'unavailable';
+				
 				var state = medallion_check(0);
 				if (state) return state;
-
 				return (items.chest8 > 1 ?
 					items.lantern || items.firerod :
 					items.lantern && items.somaria) ?
@@ -387,7 +428,6 @@
 				if (!items.icerod || !items.firerod) return 'unavailable';
 				var state = medallion_check(1);
 				if (state) return state;
-
 				return items.byrna || items.cape || items.shield === 3 ?
 					items.lantern ? 'available' : 'dark' :
 					'possible';
@@ -421,13 +461,12 @@
 
 				var laser_safety = items.byrna || items.cape || items.shield === 3,
 					dark_room = items.lantern ? 'available' : 'dark';
+            
 				if (items.chest9 <= 1) return !laser_safety ? 'glitchable' : items.firerod && items.icerod ? dark_room : 'possible';
 				if (items.chest9 <= 2) return !laser_safety ? 'glitchable' : items.firerod ? dark_room : 'possible';
 				if (items.chest9 <= 4) return laser_safety && items.firerod && items.lantern ? 'available' : 'glitchable';
 				return items.firerod && items.lantern ? 'available' : 'possible';
 			}
-			
-			
         }
     }, { // [10]
         caption: 'Ganon\'s Castle (7 Crystals)',
@@ -581,14 +620,14 @@
         caption: 'Bombable Hut {bomb}',
         is_opened: false,
         is_available: function() {
-            return can_reach_outcast() ? 'available' : 'unavailable';
-        }
+            return can_reach_outcast() ? 'available' : can_reach_outcast_with_aga() ? agahnim() : 'unavailable';
+		}
     }, { // [8]
         caption: 'C House',
         is_opened: false,
         is_available: function() {
-            return can_reach_outcast() ? 'available' : 'unavailable';
-        }
+            return can_reach_outcast() ? 'available' : can_reach_outcast_with_aga() ? agahnim() : 'unavailable';
+		}
     }, { // [9]
         caption: 'Aginah\'s Cave {bomb}',
         is_opened: false,
@@ -631,8 +670,10 @@
         caption: 'Hype Cave {bomb} (NPC + 4 {bomb})',
         is_opened: false,
         is_available: function() {
-            return can_reach_outcast() || (items.agahnim && items.moonpearl && items.hammer) ? 'available' : 'unavailable';
-        }
+			if (can_reach_outcast()) return 'available';
+			if (items.hammer || can_reach_outcast_with_aga()) return agahnim();
+			return 'unavailable';
+		}
     }, { // [17]
         caption: 'Death Mountain East (5 + 2 {bomb})',
         is_opened: false,
@@ -675,8 +716,8 @@
         caption: 'Treasure Chest Minigame: {rupee} 30',
         is_opened: false,
         is_available: function() {
-            return can_reach_outcast() ? 'available' : 'unavailable';
-        }
+            return can_reach_outcast() ? 'available' : can_reach_outcast_with_aga() ? agahnim() : 'unavailable';  
+		}
     }, { // [24]
         caption: 'Bottle Vendor: {rupee} 100',
         is_opened: false,
@@ -695,8 +736,10 @@
         caption: 'Haunted Grove',
         is_opened: false,
         is_available: function() {
-            return can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer ? 'available' : 'unavailable';
-        }
+			if (can_reach_outcast()) return 'available';
+			if ( (items.moonpearl && items.hammer) || can_reach_outcast_with_aga() ) return agahnim(); 
+			return 'unavailable';
+		}
     }, { // [27]
         caption: 'Sick Kid {bottle}',
         is_opened: false,
@@ -729,16 +772,21 @@
         caption: 'Bombos Tablet {mirror}{sword2}{book}',
         is_opened: false,
         is_available: function() {
-            return items.book && items.mirror && (can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer) ?
-                items.sword >= 2 ? 'available' : 'possible' :
-                'unavailable';
+			if (!items.book || !items.mirror) return 'unavailable';
+			if (can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer) return items.sword >= 2 ? 'available' : 'possible';
+			if (can_reach_outcast_with_aga() || (items.moonpearl && items.hammer)) return agahnim();
+			return 'unavailable';
         }
     }, { // [32]
         caption: 'Catfish',
         is_opened: false,
         is_available: function() {
-            return items.moonpearl && items.glove && (items.agahnim || items.hammer || items.glove === 2 && items.flippers) ?
-                'available' : 'unavailable';
+			if (items.moonpearl && items.glove)
+			{
+				if (items.hammer || (items.glove == 2 && items.flippers)) return 'available';
+				return agahnim();
+			}
+			return 'unavailable';
         }
     }, { // [33]
         caption: 'King Zora: {rupee} 500',
@@ -782,14 +830,20 @@
         caption: 'South of Grove {mirror}',
         is_opened: false,
         is_available: function() {
-            return items.mirror && (can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer) ? 'available' : 'unavailable';
-        }
+			if (!items.mirror) return 'unavailable';
+			if (can_reach_outcast()) return 'available';
+			if (items.hammer || can_reach_outcast_with_aga()) return agahnim();
+			return 'unavailable';
+		}
     }, { // [40]
         caption: 'Graveyard Cliff {mirror}',
         is_opened: false,
         is_available: function() {
-            return can_reach_outcast() && items.mirror ? 'available' : 'unavailable';
-        }
+			if (!items.mirror) return 'unavailable';
+			if (can_reach_outcast()) return 'available';
+			if (can_reach_outcast_with_aga()) return agahnim();
+			return 'unavailable';        
+		}
     }, { // [41]
         caption: 'Checkerboard Cave {mirror}',
         is_opened: false,
@@ -800,8 +854,10 @@
         caption: 'Peg Cave {hammer}',
         is_opened: false,
         is_available: function() {
-            return items.moonpearl && items.glove === 2 && items.hammer ? 'available' : 'unavailable';
-        }
+			if (can_reach_outcast()) return items.glove && items.cape ? 'available' : 'possible';
+			if (can_reach_outcast_with_aga()) return agahnim();
+			return 'unavailable';        
+		}
     }, { // [43]
         caption: 'Library {boots}',
         is_opened: false,
@@ -863,15 +919,18 @@
         caption: 'Pyramid',
         is_opened: false,
         is_available: function() {
-            return items.agahnim || items.glove && items.hammer && items.moonpearl ||
-                items.glove === 2 && items.moonpearl && items.flippers ? 'available' : 'unavailable';
+			if (items.glove && items.hammer && items.moonpearl) return 'available';
+			if (items.glove == 2 && items.flippers && items.moonpearl) return 'available';
+			return agahnim();
         }
     }, { // [52]
         caption: 'Digging Game {rupee} 80',
         is_opened: false,
         is_available: function() {
-            return can_reach_outcast() || items.agahnim && items.moonpearl && items.hammer ? 'available' : 'unavailable';
-        }
+			if (can_reach_outcast() || (items.agahnim && items.moonpearl && items.hammer)) return 'available';
+			if (can_reach_outcast_with_aga() || (items.moonpearl && items.hammer)) return agahnim();
+			return 'unavailable';        
+		}
     }, { // [53]
         caption: 'Zora River Ledge {flippers}',
         is_opened: false,
@@ -933,10 +992,12 @@
                 if (prizes[k] === 4 && items['boss'+k])
                     crystal_count += 1;
             }
-
+			
             if (!items.moonpearl || crystal_count < 2) return 'unavailable';
-            return items.hammer && (items.agahnim || items.glove) ||
-                items.agahnim && items.mirror && can_reach_outcast() ? 'available' : 'unavailable';
+			if (items.hammer && (items.agahnim || items.glove)) return 'available';
+			if (items.agahnim && items.mirror && can_reach_outcast()) return 'available';
+			if (items.hammer || (items.mirror && can_reach_outcast_with_aga())) return agahnim();
+			return 'unavailable';
         }
     }, { // [62]
         caption: 'Master Sword Pedestal {pendant0}{pendant1}{pendant2} (can check with {book})',
