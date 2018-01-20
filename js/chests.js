@@ -475,7 +475,7 @@
 			if (is_keysanity) {
 				var crystal_count = 0;
 				for (var k = 0; k < 10; k++) {
-					if ((prizes[k] === 3 || prizes[k] === 4) && items['boss'+k]) {
+					if ((prizes[k] === 1 || prizes[k] === 2) && items['boss'+k]) {
 						crystal_count++;
 					}
 				}
@@ -493,7 +493,7 @@
 				//STILL IN TESTING!
 				var crystal_count = 0;
 				for (var k = 0; k < 10; k++) {
-					if ((prizes[k] === 3 || prizes[k] === 4) && items['boss'+k]) {
+					if ((prizes[k] === 1 || prizes[k] === 2) && items['boss'+k]) {
 						crystal_count++;
 					}
 				}
@@ -727,7 +727,7 @@
         is_opened: false,
         is_available: function() {
             for (var k = 0; k < 10; k++) {
-                if (prizes[k] === 1 && items['boss'+k])
+                if (prizes[k] === 3 && items['boss'+k])
                     return 'available';
             }
             return 'unavailable';
@@ -989,7 +989,7 @@
             //crystal check
             var crystal_count = 0;
             for (var k = 0; k < 10; k++) {
-                if (prizes[k] === 4 && items['boss'+k])
+                if (prizes[k] === 2 && items['boss'+k])
                     crystal_count += 1;
             }
 			
@@ -1005,7 +1005,7 @@
         is_available: function() {
             var pendant_count = 0;
             for (var k = 0; k < 10; k++) {
-                if ((prizes[k] === 1 || prizes[k] === 2) && items['boss'+k]) {
+                if ((prizes[k] === 3 || prizes[k] === 4) && items['boss'+k]) {
                     if (++pendant_count === 3) return 'available';
                 }
             }
