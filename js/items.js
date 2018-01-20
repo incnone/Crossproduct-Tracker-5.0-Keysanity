@@ -8,13 +8,12 @@
         tunic: 1,
         sword: sword,
         shield: 0,
-        moonpearl: false,
 
         bow: 0,
         boomerang: 0,
         hookshot: false,
-        mushroom: false,
-        powder: false,
+		bombs: false,
+        mushpowder: 0,
 
         firerod: false,
         icerod: false,
@@ -24,7 +23,7 @@
 
         lantern: false,
         hammer: false,
-        shovel: false,
+        shovelflute: 0,
         net: false,
         book: false,
 
@@ -37,7 +36,7 @@
         boots: false,
         glove: 0,
         flippers: false,
-        flute: false,
+        moonpearl: false,
         agahnim: false,
 
         boss0: false,
@@ -108,6 +107,8 @@
             bow: { max: 3 },
             boomerang: { max: 3 },
             glove: { max: 2 },
+			mushpowder: { max: 3 },
+			shovelflute: { max: 3 },
 			smallkey0: { min: 0, max: 0 },
             smallkey1: { min: 0, max: 1 },
             smallkey2: { min: 0, max: 1 },

@@ -30,13 +30,6 @@ body {
 #tracker .tunic { width: 128px; height: 128px; }
 #tracker .sword { position: absolute; top: 0; right: 0; }
 #tracker .shield { position: absolute; bottom: 0; left: 0; }
-#tracker .moonpearl {
-  width: 48px;
-  height: 48px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
 
 #tracker .item,
 #tracker .boss { opacity: .25; }
@@ -188,8 +181,11 @@ body {
 .boomerang.active-2 { background-image: url(images/items/boomerang2.png); }
 .boomerang.active-3 { background-image: url(images/items/boomerang3.png); }
 .hookshot { background-image: url(images/items/hookshot.png); }
-.mushroom { background-image: url(images/items/mushroom.png); }
-.powder { background-image: url(images/items/powder.png); }
+.bombs { background-image: url(images/items/bombs.png); }
+.mushpowder { background-image: url(images/items/mushpowder.png); }
+.mushpowder.active-1 { background-image: url(images/items/mushroom.png); }
+.mushpowder.active-2 { background-image: url(images/items/powder.png); }
+.mushpowder.active-3 { background-image: url(images/items/mushpowder.png); }
 .firerod { background-image: url(images/items/firerod.png); }
 .icerod { background-image: url(images/items/icerod.png); }
 .bombos { background-image: url(images/items/bombos.png); }
@@ -197,7 +193,10 @@ body {
 .quake { background-image: url(images/items/quake.png); }
 .lantern { background-image: url(images/items/lantern.png); }
 .hammer { background-image: url(images/items/hammer.png); }
-.shovel { background-image: url(images/items/shovel.png); }
+.shovelflute { background-image: url(images/items/shovelflute.png); }
+.shovelflute.active-1 { background-image: url(images/items/shovel.png); }
+.shovelflute.active-2 { background-image: url(images/items/flute.png); }
+.shovelflute.active-3 { background-image: url(images/items/shovelflute.png); }
 .net { background-image: url(images/items/net.png); }
 .book { background-image: url(images/items/book.png); }
 .bottle { background-image: url(images/items/bottle0.png); }
@@ -213,7 +212,7 @@ body {
 .glove { background-image: url(images/items/glove1.png); }
 .glove.active-2 { background-image: url(images/items/glove2.png); }
 .flippers { background-image: url(images/items/flippers.png); }
-.flute { background-image: url(images/items/flute.png); }
+.moonpearl { background-image: url(images/items/moonpearl.png); }
 .agahnim, #bossMapAgahnim { background-image:url(images/dungeons/agahnim0.png); }
 .agahnim.active { background-image:url(images/dungeons/agahnim1.png); }
 .boss0, #bossMap0 { background-image: url(images/dungeons/boss0.png); }

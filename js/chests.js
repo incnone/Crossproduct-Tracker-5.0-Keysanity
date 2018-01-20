@@ -27,6 +27,8 @@
     function melee_bow() { return melee() || items.bow > 1; }
     function cane() { return items.somaria || items.byrna; }
     function rod() { return items.firerod || items.icerod; }
+	function flute() { return items.shovelflute >= 2; }
+    function shovel() { return items.shovelflute % 2; }
 
 	function agahnim() { return items.agahnim ? 'available' :
 		items.sword >= 2 || (items.cape && items.sword) ? 'agapossible' : 'unavailable';
@@ -66,20 +68,20 @@
 			if (is_keysanity) {
 				if (!items.bigkey1) return 'unavailable';
 				if (!(melee_bow() || cane() || rod())) return 'unavailable';
-				if (!(items.book && items.glove) && !(items.flute && items.glove === 2 && items.mirror)) return 'unavailable';
+				if (!(items.book && items.glove) && !(flute() && items.glove === 2 && items.mirror)) return 'unavailable';
 				if (!items.lantern && !items.firerod) return 'unavailable';
 				return 'available';
 				
 			} else {
 				if (!(melee_bow() || cane() || rod())) return 'unavailable';
-				if (!(items.book && items.glove) && !(items.flute && items.glove === 2 && items.mirror)) return 'unavailable';
+				if (!(items.book && items.glove) && !(flute() && items.glove === 2 && items.mirror)) return 'unavailable';
 				if (!items.lantern && !items.firerod) return 'unavailable';
 				return items.boots ? 'available' : 'possible';
 			}
         },
         can_get_chest: function() {
 			if (is_keysanity) {
-				if (!items.book && !(items.flute && items.glove === 2 && items.mirror)) return 'unavailable';
+				if (!items.book && !(flute() && items.glove === 2 && items.mirror)) return 'unavailable';
 				if (items.bigkey1 && items.smallkey1 === 1 && items.glove && (items.lantern || items.firerod) && items.boots) return 'available';
 				if (items.keychest1 === 6) return 'possible';
 				if (items.keychest1 >= 5 && (items.bigkey1 || items.boots)) return 'possible';
@@ -90,7 +92,7 @@
 				if (items.keychest1 >= 2 && items.bigkey1 && items.smallkey1 === 1 && ((items.glove && items.lantern) || items.boots)) return 'possible';
 				return 'unavailable';
 			} else {
-				if (!items.book && !(items.flute && items.glove === 2 && items.mirror)) return 'unavailable';
+				if (!items.book && !(flute() && items.glove === 2 && items.mirror)) return 'unavailable';
 				if (items.glove && (items.firerod || items.lantern) && items.boots) return 'available';
 				return items.chest1 > 1 && items.boots ? 'available' : 'possible';
 			}
@@ -101,9 +103,9 @@
         is_beatable: function() {
 			if (is_keysanity) {
 				if (!melee() || !items.bigkey2) return 'unavailable';
-				if (!items.flute && !items.glove) return 'unavailable';
+				if (!flute() && !items.glove) return 'unavailable';
 				if (!items.mirror && !(items.hookshot && items.hammer)) return 'unavailable';
-				return !items.flute && !items.lantern ? 'dark' : 'available';
+				return !flute() && !items.lantern ? 'dark' : 'available';
 			} else {
 				if (!melee()) return 'unavailable';
 				return this.can_get_chest();
@@ -111,18 +113,18 @@
         },
         can_get_chest: function() {
 			if (is_keysanity) {
-				if (!(items.flute || items.glove) || !(items.mirror || (items.hookshot && items.hammer))) return 'unavailable';	
-				if (items.bigkey2 && items.smallkey2 === 1 && melee() && (items.lantern || items.firerod)) return (!items.flute && !items.lantern) ? 'dark' : 'available';
-				if (items.keychest2 >= 5) return (!items.flute && !items.lantern) ? 'dark' : 'possible';
-				if (items.keychest2 >= 4 && items.smallkey2 === 1 && (items.firerod || items.lantern)) return (!items.flute && !items.lantern) ? 'dark' : 'possible';
-				if (items.keychest2 >= 3 && items.bigkey2) return (!items.flute && !items.lantern) ? 'dark' : 'possible';
-				if (items.keychest2 >= 2 && items.bigkey2 && (melee() || (items.smallkey2 === 1 && (items.firerod || items.lantern)))) return (!items.flute && !items.lantern) ? 'dark' : 'possible';
+				if (!(flute() || items.glove) || !(items.mirror || (items.hookshot && items.hammer))) return 'unavailable';	
+				if (items.bigkey2 && items.smallkey2 === 1 && melee() && (items.lantern || items.firerod)) return (!flute() && !items.lantern) ? 'dark' : 'available';
+				if (items.keychest2 >= 5) return (!flute() && !items.lantern) ? 'dark' : 'possible';
+				if (items.keychest2 >= 4 && items.smallkey2 === 1 && (items.firerod || items.lantern)) return (!flute() && !items.lantern) ? 'dark' : 'possible';
+				if (items.keychest2 >= 3 && items.bigkey2) return (!flute() && !items.lantern) ? 'dark' : 'possible';
+				if (items.keychest2 >= 2 && items.bigkey2 && (melee() || (items.smallkey2 === 1 && (items.firerod || items.lantern)))) return (!flute() && !items.lantern) ? 'dark' : 'possible';
 				return 'unavailable';
 			} else {
-				if (!items.flute && !items.glove) return 'unavailable';
+				if (!flute() && !items.glove) return 'unavailable';
 				if (!items.mirror && !(items.hookshot && items.hammer)) return 'unavailable';
 				return items.firerod || items.lantern ?
-					items.flute || items.lantern ? 'available' : 'dark' :
+					flute() || items.lantern ? 'available' : 'dark' :
 					'possible';
 			}
         }
@@ -357,7 +359,7 @@
         is_beatable: function() {
 			if (is_keysanity) {
 				if (!melee_bow()) return 'unavailable';
-				if (!items.moonpearl || !items.flute || items.glove !== 2 || !items.somaria) return 'unavailable';
+				if (!items.moonpearl || !flute() || items.glove !== 2 || !items.somaria) return 'unavailable';
 				if (!items.boots && !items.hookshot) return 'unavailable';
 				var state = medallion_check(0);
 				if (state) return state;
@@ -367,7 +369,7 @@
 			} else {
 				if (!melee_bow()) 
 					return 'unavailable';
-				else if (!items.moonpearl || !items.flute || items.glove !== 2 || !items.somaria) 
+				else if (!items.moonpearl || !flute() || items.glove !== 2 || !items.somaria) 
 					return 'unavailable';
 				else if (!items.boots && !items.hookshot) 
 					return 'unavailable';
@@ -384,7 +386,7 @@
         },
         can_get_chest: function() {
 			if (is_keysanity) {
-				if (!items.moonpearl || !items.flute || items.glove !== 2) return 'unavailable';
+				if (!items.moonpearl || !flute() || items.glove !== 2) return 'unavailable';
 				if (!items.boots && !items.hookshot) return 'unavailable';
 				var state = medallion_check(0);
 				if (state) return state;
@@ -398,7 +400,7 @@
 				if (items.keychest8 >= 1 && !items.lantern && items.firerod && items.bigkey8 && items.somaria) return 'dark';
 				return 'unavailable';
 			} else {
-				if (!items.moonpearl || !items.flute || items.glove !== 2) return 'unavailable';
+				if (!items.moonpearl || !flute() || items.glove !== 2) return 'unavailable';
 				if (!items.boots && !items.hookshot) return 'unavailable';
 				
 				var state = medallion_check(0);
@@ -588,8 +590,8 @@
         caption: 'Spiral Cave',
         is_opened: false,
         is_available: function() {
-            return (items.glove || items.flute) && (items.hookshot || items.mirror && items.hammer) ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+            return (items.glove || flute()) && (items.hookshot || items.mirror && items.hammer) ?
+                items.lantern || flute() ? 'available' : 'dark' :
                 'unavailable';
         }
     }, { // [4]
@@ -605,7 +607,7 @@
 			}
 
             return items.firerod ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+                items.lantern || flute() ? 'available' : 'dark' :
                 'possible';
         }
     }, { // [5]
@@ -636,14 +638,14 @@
         caption: 'West of Mire (2)',
         is_opened: false,
         is_available: function() {
-            return items.moonpearl && items.flute && items.glove === 2 ? 'available' : 'unavailable';
+            return items.moonpearl && flute() && items.glove === 2 ? 'available' : 'unavailable';
         }
     }, { // [11]
         caption: 'Super Bunny Cave (2)',
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 && (items.hookshot || items.mirror && items.hammer) ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+                items.lantern || flute() ? 'available' : 'dark' :
                 'unavailable';
         }
     }, { // [12]
@@ -655,7 +657,7 @@
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove && items.hammer && (items.byrna || items.cape) ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+                items.lantern || flute() ? 'available' : 'dark' :
                 'unavailable';
         }
     }, { // [14]
@@ -678,8 +680,8 @@
         caption: 'Death Mountain East (5 + 2 {bomb})',
         is_opened: false,
         is_available: function() {
-            return (items.glove || items.flute) && (items.hookshot || items.mirror && items.hammer) ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+            return (items.glove || flute()) && (items.hookshot || items.mirror && items.hammer) ?
+                items.lantern || flute() ? 'available' : 'dark' :
                 'unavailable';
         }
     }, { // [18]
@@ -701,7 +703,7 @@
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 && (items.hookshot || (items.mirror && items.hammer && items.boots)) ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+                items.lantern || flute() ? 'available' : 'dark' :
                 'unavailable';
         }
     }, { // [22]
@@ -709,7 +711,7 @@
         is_opened: false,
         is_available: function() {
             return items.moonpearl && items.glove === 2 && items.hookshot ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+                items.lantern || flute() ? 'available' : 'dark' :
                 'unavailable';
         }
     }, { // [23]
@@ -762,9 +764,9 @@
         caption: 'Ether Tablet {sword2}{book}',
         is_opened: false,
         is_available: function() {
-            return items.book && (items.glove || items.flute) && (items.mirror || items.hookshot && items.hammer) ?
+            return items.book && (items.glove || flute()) && (items.mirror || items.hookshot && items.hammer) ?
                 items.sword >= 2 ?
-                    items.lantern || items.flute ? 'available' : 'dark' :
+                    items.lantern || flute() ? 'available' : 'dark' :
                     'possible' :
                 'unavailable';
         }
@@ -798,7 +800,7 @@
         caption: 'Old Man {lantern}',
         is_opened: false,
         is_available: function() {
-            return items.glove || items.flute ?
+            return items.glove || flute() ?
                 items.lantern ? 'available' : 'dark' :
                 'unavailable';
         }
@@ -806,7 +808,7 @@
         caption: 'Witch {mushroom}',
         is_opened: false,
         is_available: function() {
-            return items.mushroom ? 'available' : 'unavailable';
+            return (items.mushpowder % 2) ? 'available' : 'unavailable';
         }
     }, { // [36]
         caption: 'Forest Hideout',
@@ -822,8 +824,8 @@
         caption: 'Spectacle Rock Cave',
         is_opened: false,
         is_available: function() {
-            return items.glove || items.flute ?
-                items.lantern || items.flute ? 'available' : 'dark' :
+            return items.glove || flute() ?
+                items.lantern || flute() ? 'available' : 'dark' :
                 'unavailable';
         }
     }, { // [39]
@@ -848,7 +850,7 @@
         caption: 'Checkerboard Cave {mirror}',
         is_opened: false,
         is_available: function() {
-            return items.flute && items.glove === 2 && items.mirror ? 'available' : 'unavailable';
+            return flute() && items.glove === 2 && items.mirror ? 'available' : 'unavailable';
         }
     }, { // [42]
         caption: 'Peg Cave {hammer}',
@@ -872,9 +874,9 @@
         caption: 'Spectacle Rock {mirror}',
         is_opened: false,
         is_available: function() {
-            return items.glove || items.flute ?
+            return items.glove || flute() ?
                 items.mirror ?
-                    items.lantern || items.flute ? 'available' : 'dark' :
+                    items.lantern || flute() ? 'available' : 'dark' :
                     'possible' :
                 'unavailable';
         }
@@ -882,9 +884,9 @@
         caption: 'Floating Island {mirror}',
         is_opened: false,
         is_available: function() {
-            return (items.glove || items.flute) && (items.hookshot || items.hammer && items.mirror) ?
+            return (items.glove || flute()) && (items.hookshot || items.hammer && items.mirror) ?
                 items.mirror && items.moonpearl && items.glove === 2 ?
-                    items.lantern || items.flute ? 'available' : 'dark' :
+                    items.lantern || flute() ? 'available' : 'dark' :
                     'possible' :
                 'unavailable';
         }
@@ -896,7 +898,7 @@
         caption: 'Desert West Ledge {book}/{mirror}',
         is_opened: false,
         is_available: function() {
-            return items.book || items.flute && items.glove === 2 && items.mirror ? 'available' : 'possible';
+            return items.book || flute() && items.glove === 2 && items.mirror ? 'available' : 'possible';
         }
     }, { // [49]
         caption: 'Lake Hylia Island {mirror}',
@@ -943,7 +945,7 @@
         caption: 'Dig Spot {shovel}',
         is_opened: false,
         is_available: function() {
-            return items.shovel ? 'available' : 'unavailable';
+            return shovel() ? 'available' : 'unavailable';
         }
     }, { // [55]
         caption: 'Back of Escape (3) {bomb}/{boots}' + (is_standard ? '' : ' (yellow = need small key)'),
@@ -974,7 +976,7 @@
         caption: 'Mad Batter {hammer}/{mirror} + {powder}',
         is_opened: false,
         is_available: function() {
-            return items.powder && (items.hammer || items.glove === 2 && items.mirror && items.moonpearl) ? 'available' : 'unavailable';
+            return (items.mushpowder >= 2) && (items.hammer || items.glove === 2 && items.mirror && items.moonpearl) ? 'available' : 'unavailable';
         }
     }, { // [60]
         caption: 'Blacksmith',
