@@ -2,6 +2,8 @@
     'use strict';
 
     var query = uri_query();
+	var is_keysanity = query.mode === 'keysanity';
+
     window.prizes = [];
     window.medallions = [0, 0];
     window.mode = query.mode;
@@ -116,7 +118,8 @@
     // event of clicking on a boss's pendant/crystal subsquare
     window.toggle_dungeon = function(n) {
         prizes[n] += 1;
-        if (prizes[n] === 5) prizes[n] = 0;
+		if (prizes[n] == 1 && !is_keysanity) prizes[n] = 2;
+        else if (prizes[n] === 6) prizes[n] = 0;
 
         document.getElementById('dungeonPrize'+n).className = 'prize-' + prizes[n];
 
