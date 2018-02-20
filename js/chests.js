@@ -876,9 +876,10 @@
         caption: 'Peg Cave {hammer}',
         is_opened: false,
         is_available: function() {
-			if (can_reach_outcast()) return items.glove && items.cape ? 'available' : 'possible';
+			if (items.glove < 2 || !items.hammer) return 'unavailable';
+			if (can_reach_outcast()) return 'available';
 			if (can_reach_outcast_with_aga()) return agahnim();
-			return 'unavailable';        
+			return 'unavailable';     
 		}
     }, { // [43]
         caption: 'Library {boots}',
